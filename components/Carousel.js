@@ -1,106 +1,156 @@
 "use client";
-import { features } from "@/Data/features";
-import React from "react";
-import Card from "./Card";
-import * as Dialog from "@radix-ui/react-dialog";
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  Cross2Icon,
-} from "@radix-ui/react-icons";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import React, { useState, useRef, Children, useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { wrap } from "popmotion";
+import { Dragging, ModalIndex } from "@/Data/Atoms";
+import { useAtom } from "jotai";
+import { Dialog } from "@radix-ui/react-dialog";
 import { twMerge } from "tailwind-merge";
-import Image from "next/image";
 
-export default function Carousel() {
+const GAP = 15;
+
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset, velocity) => {
+  return Math.abs(offset) * velocity;
+};
+export default function Carousel({ features, children }) {
+  const CAROUSEL_LENGTH = features.length; // Replace CAROUSEL_LENGTH with the actual length of features
+  const gapSum = (CAROUSEL_LENGTH - 1) * GAP;
+
+  const [openIndex, setOpenIndex] = useAtom(ModalIndex);
+  const [isDragging, setIsDragging] = useAtom(Dragging);
+  const containerRef = React.useRef(null);
+  const carouselRef = React.useRef(null);
+  const controls = useAnimation();
+  const [page, setPage] = React.useState(0);
+
+  const currIndex = wrap(0, CAROUSEL_LENGTH, page);
+
+  const paginate = (newDirection) => {
+    setPage((p) => p + newDirection);
+  };
+
+  const calcX = (index) => {
+    if (!carouselRef.current) return 0;
+
+    const childWidth =
+      (carouselRef.current.offsetWidth - gapSum) / CAROUSEL_LENGTH;
+    return index * childWidth + index * GAP;
+  };
+
   return (
-    <div className="flex flex-col items-start justify-center w-full h-screen gap-10 px-24 pt-24 overflow-hidden">
-      <div>
-        <h2 className="text-4xl">People-focused. Simple. Comfortable.</h2>
-      </div>
-      <div className="flex gap-4 ">
-        {features.map((feature, index) => {
-          return (
-            <Dialog.Root key={index}>
-              <Dialog.Trigger>
-                <Card
-                  key={index}
-                  label={feature.label}
-                  icon={feature.icon}
-                  image={feature.image}
-                />
-              </Dialog.Trigger>
+    <div
+      ref={containerRef}
+      style={{
+        display: "flex",
+        overflowX: "hidden",
+      }}
+      className={twMerge("", isDragging && "pointer-events-none")}
+    >
+      <motion.div
+        ref={carouselRef}
+        drag="x"
+        animate={controls}
+        transition={{
+          type: "spring",
+          damping: 40,
+          stiffness: 400,
+        }}
+        onDragStart={() => setIsDragging(true)} // Set the state when dragging starts
+        onDragEnd={(e, { velocity, offset, point }) => {
+          if (!carouselRef.current || !containerRef.current) return;
+          setIsDragging(false); // Set the state when dragging ends
+          console.clear();
 
-              <Dialog.Portal>
-                <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-                <Dialog.Content className="bg-white border border-black rounded-lg absolute top-[50%] flex left-[60%] h-screen -translate-x-1/2 -translate-y-1/2 w-[90%]">
-                  <div className="flex flex-col flex-1 h-full gap-4 py-10 px-14">
-                    <Dialog.Close
-                      //   onClick={handleClose} // Handle the close button click
-                      className=" p-2 w-fit bg-white text-black rounded-full opacity-60 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-                    >
-                      <ArrowLeftIcon className="w-6 h-6" />
-                      <span className="sr-only">Close</span>
-                    </Dialog.Close>
-                    <Dialog.Title className="w-full pt-10 text-4xl text-black ">
-                      Motion sensor
-                    </Dialog.Title>
-                    <VisuallyHidden asChild>
-                      <Dialog.Description className="text-black border border-green-500 DialogDescription">
-                        More information on the feature
-                      </Dialog.Description>
-                    </VisuallyHidden>
-                    <div className="flex">
-                      <p className="text-4xl text-black">
-                        Jetson comes with a high-sensitivity smart motion sensor
-                        that turns on and off the light and ventilation. Just
-                        step inside and focus on the task.
-                      </p>
-                      <div className="absolute flex items-center justify-between gap-4 px-4 bottom-10 h-fit">
-                        <button
-                          onClick={() => {
-                            animationDisabled.current = true; // Disable animation when left button is clicked
-                            decrement();
-                          }}
-                          className={twMerge(
-                            " p-2 bg-white text-black rounded-full opacity-60 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-                            //   openIndex === 0 && "opacity-10 pointer-events-none"
-                          )}
-                        >
-                          <ArrowLeftIcon className="w-6 h-6" />
-                          <span className="sr-only">Left</span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            animationDisabled.current = true; // Disable animation when left button is clicked
-                            increment();
-                          }}
-                          className={twMerge(
-                            " p-2 bg-white text-black rounded-full opacity-60 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-                            //   openIndex === 5 && "opacity-10 pointer-events-none"
-                          )}
-                        >
-                          <ArrowRightIcon className="w-6 h-6" />
-                          <span className="sr-only">Right</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex-1 h-full py-5 pr-20 overflow-clip rounded-xl">
-                    <Image
-                      src={"/lighting.webp"}
-                      height={600}
-                      width={600}
-                      alt="image"
-                      className="w-full h-full rounded-xl"
-                    />
-                  </div>
-                </Dialog.Content>
-              </Dialog.Portal>
-            </Dialog.Root>
-          );
-        })}
-      </div>
+          const swipe = swipePower(offset.x, velocity.x);
+          const isRightDirection = offset.x > 45 && velocity.x >= 0;
+
+          /*
+            https://github.com/framer/motion/issues/1087
+            when touch event by y axis, point is 0 by all axis,
+            therfore offset calculates wrong numbers.
+          */
+          const isPointOkay = point.x !== 0 && point.y !== 0;
+          const isLeftDirection =
+            offset.x < -45 && velocity.x <= 0 && isPointOkay;
+
+          const childW =
+            (carouselRef.current.offsetWidth - gapSum) / CAROUSEL_LENGTH;
+
+          const carouselDiments = carouselRef.current.getBoundingClientRect();
+          const containerDiments = containerRef.current.getBoundingClientRect();
+          console.log(containerDiments);
+
+          console.log(containerDiments.right, carouselDiments.right, childW);
+
+          const isPassedBoundaries =
+            containerDiments.right > carouselDiments.right - childW;
+
+          let newCurrIndex = currIndex;
+          let switchSlideBy = Math.ceil(-offset.x / (childW + GAP));
+
+          if (swipe > swipeConfidenceThreshold || isRightDirection) {
+            switchSlideBy = switchSlideBy - 1;
+
+            newCurrIndex =
+              currIndex > 0 ? currIndex + switchSlideBy : currIndex;
+            if (newCurrIndex < 0) newCurrIndex = 0;
+
+            console.log("swipe to right", `${currIndex} to ${newCurrIndex}`);
+
+            const indexDiff = newCurrIndex - currIndex;
+            if (indexDiff < 0) {
+              switchSlideBy = indexDiff;
+            }
+
+            if (currIndex > newCurrIndex) {
+              paginate(switchSlideBy);
+            }
+          } else if (swipe > swipeConfidenceThreshold || isLeftDirection) {
+            const lastIndex = CAROUSEL_LENGTH - 1;
+
+            newCurrIndex =
+              currIndex < lastIndex ? currIndex + switchSlideBy : currIndex;
+            if (newCurrIndex > lastIndex) newCurrIndex = lastIndex;
+            if (isPassedBoundaries) {
+              const childrenOnScreen = Math.floor(
+                containerRef.current.offsetWidth / childW
+              );
+              newCurrIndex = CAROUSEL_LENGTH - childrenOnScreen;
+            }
+
+            console.log("swipe to left", `${currIndex} to ${newCurrIndex}`);
+
+            const indexDiff = newCurrIndex - currIndex;
+            if (switchSlideBy > indexDiff) {
+              switchSlideBy = indexDiff;
+            }
+
+            if (currIndex < newCurrIndex) {
+              paginate(switchSlideBy);
+            }
+          }
+
+          // if carousel has passed the boundaries of a container
+          if (isPassedBoundaries && currIndex <= newCurrIndex) {
+            const rightEdge =
+              -carouselRef.current.offsetWidth +
+              containerRef.current.offsetWidth;
+
+            controls.start({ x: rightEdge });
+          } else {
+            controls.start({ x: -calcX(newCurrIndex) });
+          }
+        }}
+        dragConstraints={{ top: 0 }}
+        dragElastic={0.2}
+        style={{
+          display: "flex",
+          gap: GAP,
+        }}
+      >
+        {children}
+      </motion.div>
     </div>
   );
 }

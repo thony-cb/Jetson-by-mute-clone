@@ -23,6 +23,7 @@ export const features = [
         />
       </>
     ),
+    imageURL: "/motionsensor.webp",
     icon: (
       <>
         <TargetIcon className="w-16 h-16 text-white" />
@@ -44,6 +45,7 @@ export const features = [
         />
       </>
     ),
+    imageURL: "/ventilation.webp",
     icon: (
       <>
         <RocketIcon className="w-16 h-16 text-white " />
@@ -65,6 +67,7 @@ export const features = [
         />
       </>
     ),
+    imageURL: "/lighting.webp",
     icon: (
       <>
         <SunIcon className="w-16 h-16 text-white" />
@@ -86,6 +89,7 @@ export const features = [
         />
       </>
     ),
+    imageURL: "/mediaport.webp",
     icon: (
       <>
         <DesktopIcon className="w-16 h-16 text-white" />
@@ -107,6 +111,117 @@ export const features = [
         />
       </>
     ),
+    imageURL: "/plugandplay.webp",
+    icon: (
+      <>
+        <LightningBoltIcon className="w-16 h-16 text-white" />
+      </>
+    ),
+  },
+  {
+    label: "Plug & play",
+    content:
+      "Every function of Jetson is integrated with its electrical system. After installation, all you need to do is to connect Jetson to a power source and step inside.",
+    image: (
+      <>
+        <Image
+          src={"/plugandplay.webp"}
+          width={600}
+          height={900}
+          alt={"feature image"}
+          className="absolute top-0 h-full "
+        />
+      </>
+    ),
+    imageURL: "/plugandplay.webp",
+    icon: (
+      <>
+        <LightningBoltIcon className="w-16 h-16 text-white" />
+      </>
+    ),
+  },
+  {
+    label: "Plug & play",
+    content:
+      "Every function of Jetson is integrated with its electrical system. After installation, all you need to do is to connect Jetson to a power source and step inside.",
+    image: (
+      <>
+        <Image
+          src={"/plugandplay.webp"}
+          width={600}
+          height={900}
+          alt={"feature image"}
+          className="absolute top-0 h-full "
+        />
+      </>
+    ),
+    imageURL: "/plugandplay.webp",
+    icon: (
+      <>
+        <LightningBoltIcon className="w-16 h-16 text-white" />
+      </>
+    ),
+  },
+  {
+    label: "Plug & play",
+    content:
+      "Every function of Jetson is integrated with its electrical system. After installation, all you need to do is to connect Jetson to a power source and step inside.",
+    image: (
+      <>
+        <Image
+          src={"/plugandplay.webp"}
+          width={600}
+          height={900}
+          alt={"feature image"}
+          className="absolute top-0 h-full "
+        />
+      </>
+    ),
+    imageURL: "/plugandplay.webp",
+    icon: (
+      <>
+        <LightningBoltIcon className="w-16 h-16 text-white" />
+      </>
+    ),
+  },
+  {
+    label: "Plug & play",
+    content:
+      "Every function of Jetson is integrated with its electrical system. After installation, all you need to do is to connect Jetson to a power source and step inside.",
+    image: (
+      <>
+        <Image
+          src={"/plugandplay.webp"}
+          width={600}
+          height={900}
+          alt={"feature image"}
+          className="absolute top-0 h-full "
+        />
+      </>
+    ),
+    imageURL: "/plugandplay.webp",
+    icon: (
+      <>
+        <LightningBoltIcon className="w-16 h-16 text-white" />
+      </>
+    ),
+  },
+  {
+    label: "Plug & play",
+    content:
+      "Every function of Jetson is integrated with its electrical system. After installation, all you need to do is to connect Jetson to a power source and step inside.",
+    image: (
+      <>
+        <Image
+          src={"/plugandplay.webp"}
+          width={600}
+          height={900}
+          alt={"feature image"}
+          className="absolute top-0 h-full "
+        />
+      </>
+    ),
+    imageURL: "/plugandplay.webp",
     icon: (
       <>
         <LightningBoltIcon className="w-16 h-16 text-white" />

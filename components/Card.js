@@ -6,7 +6,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 export default function Card({ label, content, image, icon }) {
   const controls = useAnimation(); // Fix the hook name
   return (
-    <div className="aspect-[.6] relative min-w-[18rem] min-h-[10rem] overflow-clip rounded-2xl  flex flex-col bg-slate-600">
+    <div className="aspect-[.6] relative min-w-[18rem] min-h-[10rem] overflow-clip rounded-2xl  flex flex-col ">
       {image}
       <div
         className={
