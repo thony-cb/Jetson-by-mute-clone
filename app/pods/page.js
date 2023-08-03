@@ -1,16 +1,12 @@
-import { features } from "@/Data/features";
-import Carousel from "@/components/Carousel";
+import CarouselWrapper from "@/components/CarouselWrapper";
 import CarouselWrapperCopy from "@/components/CarouselWrapper copy";
 import Navbar from "@/components/Navbar";
-import React from "react";
 
-export default function Page() {
+export default function Pods() {
   return (
-    <div>
-      <div className="flex flex-col justify-center w-full h-screen px-24 pt-24 overflow-hidden">
-        <Carousel features={features} />
-      </div>
-      <div></div>
-    </div>
+    <main className="flex w-full bg-[#c6aca7] flex-col items-center relative justify-between min-h-screen">
+      <Navbar />
+      <CarouselWrapperCopy />
+    </main>
   );
 }

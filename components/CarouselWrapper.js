@@ -21,32 +21,37 @@ import {
 } from "@/Data/Atoms";
 import { useAtom } from "jotai";
 import { AnimatePresence, motion } from "framer-motion";
-import { OpenDialog, OverlayAnimation, SwitchAnimation, SwitchDialog, SwitchOverlayAnimation } from "@/Data/Animations";
+import {
+  OpenDialog,
+  OverlayAnimation,
+  SwitchAnimation,
+  SwitchDialog,
+  SwitchOverlayAnimation,
+} from "@/Data/Animations";
 
 export default function CarouselWrapper() {
   const [openIndex, setOpenIndex] = useAtom(ModalIndex);
   const [isDragging] = useAtom(Dragging);
-  const [isSwitching, setIsSwitching] = useAtom(SwitchState)
+  const [isSwitching, setIsSwitching] = useAtom(SwitchState);
   // const [animateModal, setAnimateModal] = useAtom(ModalAnimations);
   // const [animateOverlay, setAnimateOverlay] = useAtom(OverlayAnimations);
   const handleOpenChange = (index) => {
     console.log(`open index: ${openIndex}, ${index}`);
-     console.log(`switch state ${isSwitching}`)
+    console.log(`switch state ${isSwitching}`);
     if (openIndex > -1) {
-      setIsSwitching(false)
+      setIsSwitching(false);
       setOpenIndex(-1);
-            console.log(isSwitching)
-
+      console.log(isSwitching);
     } else {
-       console.log(isSwitching)
+      console.log(isSwitching);
       setOpenIndex(index);
     }
     console.log(`Modal: ${index}`);
   };
   const increment = () => {
     if (openIndex != 5) {
-            console.log(isSwitching)
-      setIsSwitching(true)
+      console.log(isSwitching);
+      setIsSwitching(true);
       // setAnimateOverlay(SwitchOverlayAnimation);
       // setAnimateModal(SwitchDialog);
       setOpenIndex(openIndex + 1);
@@ -56,7 +61,7 @@ export default function CarouselWrapper() {
   };
   const decrement = () => {
     if (openIndex != 0) {
-      setIsSwitching(true)
+      setIsSwitching(true);
       // setAnimateOverlay(SwitchOverlayAnimation);
       // setAnimateModal(SwitchDialog);
       setOpenIndex(openIndex - 1);
@@ -64,14 +69,14 @@ export default function CarouselWrapper() {
       return;
     }
   };
-  const handleClose = (index) =>{
+  const handleClose = (index) => {
     console.log(`Close index: ${openIndex}, ${index}`);
     if (openIndex > -1) {
-      setIsSwitching(false)
+      setIsSwitching(false);
       setOpenIndex(-1);
-      console.log(isSwitching)
+      console.log(isSwitching);
     } else {
-      return
+      return;
     }
     console.log(`Modal Close: ${index}`);
   };
@@ -105,13 +110,10 @@ export default function CarouselWrapper() {
                 </Dialog.Trigger>
                 <AnimatePresence>
                   {openIndex > -1 && (
-                    <Dialog.Portal
-                   >
+                    <Dialog.Portal>
                       <Dialog.Overlay asChild>
-                        
                         <motion.div
-                        
-                         onClick={() => handleClose(index)} // Handle the close button click
+                          onClick={() => handleClose(index)} // Handle the close button click
                           className="fixed inset-0  cursor-pointer bg-black/50 backdrop-blur-[10px]"
                           variants={isSwitching ? null : OverlayAnimation}
                           initial="initial"
@@ -121,7 +123,6 @@ export default function CarouselWrapper() {
                       </Dialog.Overlay>
                       <Dialog.Content asChild>
                         <motion.div
-                        
                           variants={isSwitching ? null : OpenDialog}
                           initial="initial"
                           animate="animate"
@@ -136,21 +137,15 @@ export default function CarouselWrapper() {
                               <ArrowLeftIcon className="w-6 h-6" />
                               <span className="sr-only">Close</span>
                             </Dialog.Close>
-                            <Dialog.Title 
-                            
-                          
-                          className="w-full pt-10 text-4xl text-black ">
-
-                            <motion.h1
-                        
-                            variants={isSwitching ? SwitchAnimation: null}
-                          initial="initial"
-                          animate="animate"
-                          exit="exit" >
-
-                              {feature.label}
-                            </motion.h1>
-
+                            <Dialog.Title className="w-full pt-10 text-4xl text-black ">
+                              <motion.h1
+                                variants={isSwitching ? SwitchAnimation : null}
+                                initial="initial"
+                                animate="animate"
+                                exit="exit"
+                              >
+                                {feature.label}
+                              </motion.h1>
                             </Dialog.Title>
                             <VisuallyHidden asChild>
                               <Dialog.Description className="text-black DialogDescription">
@@ -158,12 +153,13 @@ export default function CarouselWrapper() {
                               </Dialog.Description>
                             </VisuallyHidden>
                             <div className="flex">
-                              <motion.p 
-                               variants={isSwitching ? SwitchAnimation: null}
-                          initial="initial"
-                          animate="animate"
-                          exit="exit"
-                          className="text-4xl text-black">
+                              <motion.p
+                                variants={isSwitching ? SwitchAnimation : null}
+                                initial="initial"
+                                animate="animate"
+                                exit="exit"
+                                className="text-4xl text-black"
+                              >
                                 {feature.content}
                               </motion.p>
                               <div className="absolute flex items-center justify-between gap-4 px-4 bottom-10 h-fit">
